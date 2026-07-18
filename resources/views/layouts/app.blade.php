@@ -45,12 +45,12 @@
                     </a>
                 @endif
 
-                <span class="text-white small">
+                <a href="{{ route('password.form') }}" class="text-white small text-decoration-none">
                     {{ auth()->user()->name }}
                     <span class="badge {{ auth()->user()->isAdmin() ? 'bg-danger' : 'bg-secondary' }} ms-1">
                         {{ auth()->user()->isAdmin() ? 'Admin' : 'Infirmier' }}
                     </span>
-                </span>
+                </a>
 
                 <form method="POST" action="{{ route('logout') }}" class="mb-0">
                     @csrf

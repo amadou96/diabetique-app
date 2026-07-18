@@ -35,6 +35,7 @@ class ConsultationController extends Controller
     $data = [
         'patient_id'          => $request->patient_id,
         'date_consultation'   => $request->date_consultation,
+        'structure'           => $request->structure,
         'glycemie'            => $request->glycemie,
         'type_glycemie'       => $request->type_glycemie,
         'tension_systolique'  => $request->tension_systolique,

@@ -50,6 +50,20 @@
             <input type="date" name="date_consultation" class="form-control" required>
         </div>
 
+        {{-- Structure --}}
+        <div class="mb-3">
+            <label>Structure <span class="text-danger">*</span></label>
+            <select name="structure" class="form-control" required>
+                <option value="">-- Choisir la structure --</option>
+                <option value="Centre Sante Sangalkam">Centre Sante Sangalkam</option>
+                <option value="Centre Sante Rufisque">Centre Sante Rufisque</option>
+                <option value="Centre Sante Colobane">Centre Sante Colobane</option>
+                <option value="Centre Diabetique Rufisque">Centre Diabetique Rufisque</option>
+                <option value="Clinique NABY">Clinique NABY</option>
+                <option value="A Domicile">A Domicile</option>
+            </select>
+        </div>
+
         {{-- Constantes --}}
         <h5 class="mt-4 mb-3">Constantes</h5>
 

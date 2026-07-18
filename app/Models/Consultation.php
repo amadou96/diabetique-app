@@ -16,6 +16,7 @@ class Consultation extends Model
         'patient_id',
 
         'date_consultation',
+        'structure',
 
         'glycemie',
         'tension_systolique',

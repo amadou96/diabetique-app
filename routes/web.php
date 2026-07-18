@@ -8,6 +8,7 @@ use App\Http\Controllers\BilanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RendezVousController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PasswordController;
 
 // Auth (public)
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
@@ -21,6 +22,10 @@ Route::middleware('auth')->group(function () {
 
     // Tableau de bord
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Mot de passe
+    Route::get('/password', [PasswordController::class, 'showForm'])->name('password.form');
+    Route::post('/password', [PasswordController::class, 'update'])->name('password.update');
 
     // Patients : lecture autorisée pour tout le monde connecté
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
