@@ -24,7 +24,7 @@
     </div>
 @endif
 
-{{-- Barre de recherche --}}
+{{-- Barre de recherches --}}
 <form method="GET" action="{{ route('patients.index') }}" class="mb-4">
     <div class="input-group">
         <input type="text"
