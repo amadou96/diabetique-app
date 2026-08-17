@@ -23,17 +23,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|email|unique:users,email',
-            'password' => 'required|min:8|confirmed',
-            'role'     => 'required|in:admin,infirmier',
+            'name'      => 'required|string|max:255',
+            'email'     => 'required|email|unique:users,email',
+            'password'  => 'required|min:8|confirmed',
+            'role'      => 'required|in:admin,infirmier',
+            'structure' => 'required_if:role,infirmier',
+        ], [
+            'structure.required_if' => 'La structure est obligatoire pour un infirmier.',
         ]);
 
         User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
-            'role'     => $request->role,
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'password'  => Hash::make($request->password),
+            'role'      => $request->role,
+            'structure' => $request->role === 'infirmier' ? $request->structure : null,
         ]);
 
         return redirect()->route('users.index')

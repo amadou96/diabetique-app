@@ -60,6 +60,11 @@
             {{ $patient->groupe_sanguin }}
         </p>
 
+        <p>
+            <strong>Structure de suivi :</strong>
+            {{ $patient->structure ?? '—' }}
+        </p>
+
     </div>
 
 </div>
@@ -86,30 +91,21 @@
 
     <div class="card-body">
 
-        <div class="d-flex justify-content-between">
+        <div class="d-flex justify-content-between align-items-start">
 
-            <h5>
+            <div>
+                <h5 class="mb-1">
+                    Consultation du {{ $consultation->date_consultation->translatedFormat('d F Y') }}
+                </h5>
+                <span class="badge bg-primary">IMC : {{ $consultation->imc }}</span>
+            </div>
 
-                Consultation du
-                {{ $consultation->date_consultation->translatedFormat('d F Y') }}
-
-            </h5>
-
-            @if($consultation->structure)
-                <small class="text-muted">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16" class="me-1">
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
-                    </svg>
-                    {{ $consultation->structure }}
-                </small>
+            @if(auth()->user()->isAdmin())
+                <a href="{{ route('consultations.edit', $consultation->id) }}"
+                   class="btn btn-sm btn-outline-warning">
+                    Modifier
+                </a>
             @endif
-
-            <span class="badge bg-primary">
-
-                IMC :
-                {{ $consultation->imc }}
-
-            </span>
 
         </div>
 
@@ -211,22 +207,18 @@
 
         </div>
 
+        @if(auth()->user()->isAdmin())
         <hr>
-         <p>
-
+        <p>
             <strong>Observations :</strong>
-
             {{ $consultation->observations }}
-
         </p>
 
         <p>
-
             <strong>Traitement :</strong>
-
             {{ $consultation->traitement }}
-
         </p>
+        @endif
 
        
 

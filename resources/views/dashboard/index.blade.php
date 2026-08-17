@@ -61,19 +61,21 @@
     </div>
 
     <div class="col-md-3">
-        <div class="card border-0 shadow-sm h-100">
-            <div class="card-body d-flex align-items-center gap-3">
-                <div class="rounded-circle bg-warning bg-opacity-10 p-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#ffc107">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
-                    </svg>
-                </div>
-                <div>
-                    <div class="fs-2 fw-bold text-warning">{{ $sansSuivi }}</div>
-                    <div class="text-muted small">Sans suivi +3 mois</div>
+        <a href="{{ route('patients.index', ['filtre' => 'sans_suivi']) }}" class="text-decoration-none">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+                    <div class="rounded-circle bg-warning bg-opacity-10 p-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color:#ffc107">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="fs-2 fw-bold text-warning">{{ $sansSuivi }}</div>
+                        <div class="text-muted small">Sans suivi +3 mois</div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </div>
 
 </div>

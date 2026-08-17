@@ -35,7 +35,6 @@ class ConsultationController extends Controller
     $data = [
         'patient_id'          => $request->patient_id,
         'date_consultation'   => $request->date_consultation,
-        'structure'           => $request->structure,
         'glycemie'            => $request->glycemie,
         'type_glycemie'       => $request->type_glycemie,
         'tension_systolique'  => $request->tension_systolique,
@@ -57,5 +56,47 @@ class ConsultationController extends Controller
 
     return redirect()->route('patients.show', $request->patient_id)
             ->with('success', 'Consultation enregistrée avec succès');
+}
+
+public function edit(Consultation $consultation)
+{
+    $patient = $consultation->patient;
+    return view('consultations.edit', compact('consultation', 'patient'));
+}
+
+public function update(Request $request, Consultation $consultation)
+{
+    $request->validate([
+        'date_consultation' => 'required|date',
+    ]);
+
+    $imc = null;
+    if ($request->poids && $request->taille) {
+        $imc = round($request->poids / ($request->taille * $request->taille), 2);
+    }
+
+    $data = [
+        'date_consultation'   => $request->date_consultation,
+        'glycemie'            => $request->glycemie,
+        'type_glycemie'       => $request->type_glycemie,
+        'tension_systolique'  => $request->tension_systolique,
+        'tension_diastolique' => $request->tension_diastolique,
+        'frequence_cardiaque' => $request->frequence_cardiaque,
+        'poids'               => $request->poids,
+        'taille'              => $request->taille,
+        'temperature'         => $request->temperature,
+        'imc'                 => $imc,
+    ];
+
+    if (auth()->user()->isAdmin()) {
+        $data['observations'] = $request->observations;
+        $data['traitement']   = $request->traitement;
+        $data['prochain_rv']  = $request->prochain_rv;
+    }
+
+    $consultation->update($data);
+
+    return redirect()->route('patients.show', $consultation->patient_id)
+            ->with('success', 'Consultation mise à jour avec succès');
 }
 }

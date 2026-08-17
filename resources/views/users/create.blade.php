@@ -20,7 +20,7 @@
 
     <div class="card-body">
 
-        <form action="{{ route('users.store') }}" method="POST">
+        <form action="{{ route('users.store') }}" method="POST" id="userForm">
 
             @csrf
 
@@ -44,10 +44,22 @@
 
             <div class="mb-3">
                 <label class="form-label">Rôle</label>
-                <select name="role" class="form-control" required>
-                    <option value="infirmier" {{ old('role') === 'infirmier' ? 'selected' : '' }}>Infirmier</option>
+                <select name="role" class="form-control" required id="roleSelect">
+                    <option value="infirmier" {{ old('role', 'infirmier') === 'infirmier' ? 'selected' : '' }}>Infirmier</option>
                     <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
                 </select>
+            </div>
+
+            {{-- Structure : obligatoire pour infirmier --}}
+            <div class="mb-3" id="structureField">
+                <label class="form-label">Structure de rattachement <span class="text-danger">*</span></label>
+                <select name="structure" class="form-control" id="structureSelect">
+                    <option value="">-- Choisir la structure --</option>
+                    @foreach(['Centre Sante Sangalkam','Centre Sante Rufisque','Centre Sante Colobane','Centre Diabetique Rufisque','Clinique NABY','A Domicile'] as $s)
+                        <option value="{{ $s }}" {{ old('structure') === $s ? 'selected' : '' }}>{{ $s }}</option>
+                    @endforeach
+                </select>
+                <small class="text-muted">L'infirmier ne verra que les patients de cette structure.</small>
             </div>
 
             <div class="mb-3">
@@ -74,5 +86,24 @@
     </div>
 
 </div>
+
+<script>
+    const roleSelect = document.getElementById('roleSelect');
+    const structureField = document.getElementById('structureField');
+    const structureSelect = document.getElementById('structureSelect');
+
+    function toggleStructure() {
+        if (roleSelect.value === 'infirmier') {
+            structureField.style.display = '';
+            structureSelect.required = true;
+        } else {
+            structureField.style.display = 'none';
+            structureSelect.required = false;
+        }
+    }
+
+    roleSelect.addEventListener('change', toggleStructure);
+    toggleStructure(); // init
+</script>
 
 @endsection

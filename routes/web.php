@@ -27,8 +27,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/password', [PasswordController::class, 'showForm'])->name('password.form');
     Route::post('/password', [PasswordController::class, 'update'])->name('password.update');
 
-    // Patients : lecture autorisée pour tout le monde connecté
+    // Patients : lecture + création accessibles à tous
     Route::get('/patients', [PatientController::class, 'index'])->name('patients.index');
+    Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
+    Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
 
     // Consultations : l'infirmier peut créer
     Route::get('/consultations/create', [ConsultationController::class, 'create'])->name('consultations.create');
@@ -40,12 +42,14 @@ Route::middleware('auth')->group(function () {
     // Routes réservées à l'admin
     Route::middleware('role:admin')->group(function () {
 
-        // Patients (écriture) — routes statiques avant {patient}
-        Route::get('/patients/create', [PatientController::class, 'create'])->name('patients.create');
-        Route::post('/patients', [PatientController::class, 'store'])->name('patients.store');
+        // Patients (modification / suppression)
         Route::get('/patients/{patient}/edit', [PatientController::class, 'edit'])->name('patients.edit');
         Route::put('/patients/{patient}', [PatientController::class, 'update'])->name('patients.update');
         Route::delete('/patients/{patient}', [PatientController::class, 'destroy'])->name('patients.destroy');
+
+        // Consultations (modification)
+        Route::get('/consultations/{consultation}/edit', [ConsultationController::class, 'edit'])->name('consultations.edit');
+        Route::put('/consultations/{consultation}', [ConsultationController::class, 'update'])->name('consultations.update');
 
         // Bilans
         Route::get('/bilans/create', [BilanController::class, 'create'])->name('bilans.create');

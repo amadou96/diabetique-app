@@ -22,6 +22,7 @@ class Patient extends Model
     protected $fillable = [
 
         'numero_dossier',
+        'structure',
 
         'nom',
         'prenom',

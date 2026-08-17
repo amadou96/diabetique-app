@@ -31,6 +31,7 @@
                     <th>Nom</th>
                     <th>Email</th>
                     <th>Rôle</th>
+                    <th>Structure</th>
                     <th></th>
                 </tr>
             </thead>
@@ -48,6 +49,7 @@
                             <span class="badge bg-secondary">Infirmier</span>
                         @endif
                     </td>
+                    <td>{{ $user->structure ?? '—' }}</td>
                     <td class="text-end">
                         @if($user->id !== auth()->id())
                             <form action="{{ route('users.destroy', $user) }}"

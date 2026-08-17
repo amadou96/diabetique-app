@@ -4,40 +4,72 @@ namespace App\Http\Controllers;
 
 use App\Models\Patient;
 use App\Models\Consultation;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Cartes statistiques
-        $totalPatients = Patient::count();
+        $user = auth()->user();
 
-        $rvAujourdhui = Consultation::where('prochain_rv', today())->count();
+        if ($user->isInfirmier() && $user->structure) {
+            $patientIds = Patient::where('structure', $user->structure)->pluck('id');
 
-        $consultationsCeMois = Consultation::whereMonth('date_consultation', now()->month)
-            ->whereYear('date_consultation', now()->year)
-            ->count();
+            $totalPatients = $patientIds->count();
 
-        // Patients sans consultation depuis plus de 3 mois (ou jamais suivis)
-        $patientsAvecSuiviRecent = Consultation::select('patient_id')
-            ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
-            ->distinct()
-            ->pluck('patient_id');
+            $rvAujourdhui = Consultation::whereIn('patient_id', $patientIds)
+                ->where('prochain_rv', today())->count();
 
-        $sansSuivi = Patient::whereNotIn('id', $patientsAvecSuiviRecent)->count();
+            $consultationsCeMois = Consultation::whereIn('patient_id', $patientIds)
+                ->whereMonth('date_consultation', now()->month)
+                ->whereYear('date_consultation', now()->year)
+                ->count();
 
-        // Liste RV du jour
-        $rvDuJour = Consultation::with('patient')
-            ->where('prochain_rv', today())
-            ->orderBy('created_at')
-            ->get();
+            $idsAvecSuivi = Consultation::whereIn('patient_id', $patientIds)
+                ->select('patient_id')
+                ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
+                ->distinct()
+                ->pluck('patient_id');
 
-        // 5 dernières consultations
-        $dernieresConsultations = Consultation::with('patient')
-            ->latest('date_consultation')
-            ->take(5)
-            ->get();
+            $sansSuivi = Patient::where('structure', $user->structure)
+                ->whereNotIn('id', $idsAvecSuivi)->count();
+
+            $rvDuJour = Consultation::with('patient')
+                ->whereIn('patient_id', $patientIds)
+                ->where('prochain_rv', today())
+                ->orderBy('created_at')
+                ->get();
+
+            $dernieresConsultations = Consultation::with('patient')
+                ->whereIn('patient_id', $patientIds)
+                ->latest('date_consultation')
+                ->take(5)
+                ->get();
+        } else {
+            $totalPatients = Patient::count();
+
+            $rvAujourdhui = Consultation::where('prochain_rv', today())->count();
+
+            $consultationsCeMois = Consultation::whereMonth('date_consultation', now()->month)
+                ->whereYear('date_consultation', now()->year)
+                ->count();
+
+            $idsAvecSuivi = Consultation::select('patient_id')
+                ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
+                ->distinct()
+                ->pluck('patient_id');
+
+            $sansSuivi = Patient::whereNotIn('id', $idsAvecSuivi)->count();
+
+            $rvDuJour = Consultation::with('patient')
+                ->where('prochain_rv', today())
+                ->orderBy('created_at')
+                ->get();
+
+            $dernieresConsultations = Consultation::with('patient')
+                ->latest('date_consultation')
+                ->take(5)
+                ->get();
+        }
 
         return view('dashboard.index', compact(
             'totalPatients',
