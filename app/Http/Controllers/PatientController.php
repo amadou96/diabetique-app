@@ -56,6 +56,7 @@ class PatientController extends Controller
         $request->validate([
             'numero_dossier' => 'required|unique:patients,numero_dossier',
             'structure'      => $user->isAdmin() ? 'required' : 'nullable',
+            'structure_autre' => 'nullable|string|max:255|required_if:structure,' . Patient::STRUCTURE_AUTRES,
             'nom'            => 'required',
             'prenom'         => 'required',
             'date_naissance' => 'required',
@@ -64,10 +65,11 @@ class PatientController extends Controller
             'numero_dossier.required' => 'Le numéro de dossier est obligatoire.',
             'numero_dossier.unique'   => 'Ce numéro de dossier est déjà utilisé.',
             'structure.required'      => 'La structure de suivi est obligatoire.',
+            'structure_autre.required_if' => 'Veuillez préciser la structure de suivi.',
         ]);
 
         // L'infirmier crée dans sa propre structure
-        $structure = $user->isInfirmier() ? $user->structure : $request->structure;
+        $structure = $user->isInfirmier() ? $user->structure : Patient::structureFromRequest($request);
 
         Patient::create([
             'numero_dossier'       => $request->numero_dossier,
@@ -99,6 +101,7 @@ class PatientController extends Controller
         $request->validate([
             'numero_dossier' => 'required|unique:patients,numero_dossier,' . $patient->id,
             'structure'      => 'required',
+            'structure_autre' => 'nullable|string|max:255|required_if:structure,' . Patient::STRUCTURE_AUTRES,
             'nom'            => 'required',
             'prenom'         => 'required',
             'date_naissance' => 'required',
@@ -107,11 +110,12 @@ class PatientController extends Controller
             'numero_dossier.required' => 'Le numéro de dossier est obligatoire.',
             'numero_dossier.unique'   => 'Ce numéro de dossier est déjà utilisé.',
             'structure.required'      => 'La structure de suivi est obligatoire.',
+            'structure_autre.required_if' => 'Veuillez préciser la structure de suivi.',
         ]);
 
         $patient->update([
             'numero_dossier'       => $request->numero_dossier,
-            'structure'            => $request->structure,
+            'structure'            => Patient::structureFromRequest($request),
             'nom'                  => $request->nom,
             'prenom'               => $request->prenom,
             'date_naissance'       => $request->date_naissance,

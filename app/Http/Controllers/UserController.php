@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Patient;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -28,8 +29,10 @@ class UserController extends Controller
             'password'  => 'required|min:8|confirmed',
             'role'      => 'required|in:admin,infirmier',
             'structure' => 'required_if:role,infirmier',
+            'structure_autre' => 'nullable|string|max:255|required_if:structure,' . Patient::STRUCTURE_AUTRES,
         ], [
             'structure.required_if' => 'La structure est obligatoire pour un infirmier.',
+            'structure_autre.required_if' => 'Veuillez préciser la structure.',
         ]);
 
         User::create([
@@ -37,7 +40,7 @@ class UserController extends Controller
             'email'     => $request->email,
             'password'  => Hash::make($request->password),
             'role'      => $request->role,
-            'structure' => $request->role === 'infirmier' ? $request->structure : null,
+            'structure' => $request->role === 'infirmier' ? Patient::structureFromRequest($request) : null,
         ]);
 
         return redirect()->route('users.index')

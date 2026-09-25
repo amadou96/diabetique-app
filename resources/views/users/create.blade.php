@@ -52,13 +52,7 @@
 
             {{-- Structure : obligatoire pour infirmier --}}
             <div class="mb-3" id="structureField">
-                <label class="form-label">Structure de rattachement <span class="text-danger">*</span></label>
-                <select name="structure" class="form-control" id="structureSelect">
-                    <option value="">-- Choisir la structure --</option>
-                    @foreach(['Centre Sante Sangalkam','Centre Sante Rufisque','Centre Sante Colobane','Centre Diabetique Rufisque','Clinique NABY','A Domicile'] as $s)
-                        <option value="{{ $s }}" {{ old('structure') === $s ? 'selected' : '' }}>{{ $s }}</option>
-                    @endforeach
-                </select>
+                @include('partials.structure-select', ['label' => 'Structure de rattachement', 'required' => false])
                 <small class="text-muted">L'infirmier ne verra que les patients de cette structure.</small>
             </div>
 
@@ -99,6 +93,9 @@
         } else {
             structureField.style.display = 'none';
             structureSelect.required = false;
+            // Vider la structure pour ne pas laisser le champ "Autres" obligatoire
+            structureSelect.value = '';
+            structureSelect.dispatchEvent(new Event('change'));
         }
     }
 

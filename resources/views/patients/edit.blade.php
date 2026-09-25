@@ -31,13 +31,7 @@
             </div>
 
             <div class="mb-3">
-                <label>Structure de suivi <span class="text-danger">*</span></label>
-                <select name="structure" class="form-control" required>
-                    <option value="">-- Choisir la structure --</option>
-                    @foreach(['Centre Sante Sangalkam','Centre Sante Rufisque','Centre Sante Colobane','Centre Diabetique Rufisque','Clinique NABY','A Domicile'] as $s)
-                        <option value="{{ $s }}" {{ old('structure', $patient->structure) === $s ? 'selected' : '' }}>{{ $s }}</option>
-                    @endforeach
-                </select>
+                @include('partials.structure-select', ['label' => 'Structure de suivi', 'current' => $patient->structure])
             </div>
 
             <div class="row">
