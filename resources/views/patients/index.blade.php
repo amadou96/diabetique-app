@@ -19,7 +19,7 @@
 
 @if($filtre === 'sans_suivi')
     <div class="alert alert-warning d-flex justify-content-between align-items-center">
-        <span>Affichage : patients <strong>sans suivi depuis plus de 3 mois</strong></span>
+        <span>Affichage : patients <strong>sans suivi depuis plus de {{ \App\Models\Patient::MOIS_SANS_SUIVI }} mois</strong></span>
         <a href="{{ route('patients.index') }}" class="btn btn-sm btn-outline-secondary">Voir tous</a>
     </div>
 @endif
@@ -30,7 +30,7 @@
         <input type="text"
                name="search"
                class="form-control"
-               placeholder="Rechercher par nom, prénom ou numéro de dossier…"
+               placeholder="Rechercher par prénom et nom, dossier, adresse ou structure…"
                value="{{ $search ?? '' }}">
         <button class="btn btn-primary" type="submit">Rechercher</button>
         @if($search)

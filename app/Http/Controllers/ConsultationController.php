@@ -99,4 +99,13 @@ public function update(Request $request, Consultation $consultation)
     return redirect()->route('patients.show', $consultation->patient_id)
             ->with('success', 'Consultation mise à jour avec succès');
 }
+
+public function destroy(Consultation $consultation)
+{
+    $patientId = $consultation->patient_id;
+    $consultation->delete();
+
+    return redirect()->route('patients.show', $patientId)
+            ->with('success', 'Consultation supprimée avec succès');
+}
 }

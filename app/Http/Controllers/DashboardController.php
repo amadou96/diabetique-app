@@ -26,7 +26,7 @@ class DashboardController extends Controller
 
             $idsAvecSuivi = Consultation::whereIn('patient_id', $patientIds)
                 ->select('patient_id')
-                ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
+                ->where('date_consultation', '>=', now()->subMonths(Patient::MOIS_SANS_SUIVI)->toDateString())
                 ->distinct()
                 ->pluck('patient_id');
 
@@ -54,7 +54,7 @@ class DashboardController extends Controller
                 ->count();
 
             $idsAvecSuivi = Consultation::select('patient_id')
-                ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
+                ->where('date_consultation', '>=', now()->subMonths(Patient::MOIS_SANS_SUIVI)->toDateString())
                 ->distinct()
                 ->pluck('patient_id');
 

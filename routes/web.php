@@ -50,10 +50,14 @@ Route::middleware('auth')->group(function () {
         // Consultations (modification)
         Route::get('/consultations/{consultation}/edit', [ConsultationController::class, 'edit'])->name('consultations.edit');
         Route::put('/consultations/{consultation}', [ConsultationController::class, 'update'])->name('consultations.update');
+        Route::delete('/consultations/{consultation}', [ConsultationController::class, 'destroy'])->name('consultations.destroy');
 
         // Bilans
         Route::get('/bilans/create', [BilanController::class, 'create'])->name('bilans.create');
         Route::post('/bilans', [BilanController::class, 'store'])->name('bilans.store');
+        Route::get('/bilans/{bilan}/edit', [BilanController::class, 'edit'])->name('bilans.edit');
+        Route::put('/bilans/{bilan}', [BilanController::class, 'update'])->name('bilans.update');
+        Route::delete('/bilans/{bilan}', [BilanController::class, 'destroy'])->name('bilans.destroy');
 
         // Gestion des utilisateurs
         Route::get('/users', [UserController::class, 'index'])->name('users.index');

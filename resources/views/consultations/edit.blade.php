@@ -19,7 +19,8 @@
                 <div class="col-md-6">
                     <p><strong>Nom :</strong> {{ $patient->nom }} {{ $patient->prenom }}</p>
                     <p><strong>Dossier :</strong> {{ $patient->numero_dossier }}</p>
-                    <p><strong>Date de naissance :</strong> {{ $patient->date_naissance?->translatedFormat('d F Y') }}</p>
+                    <p><strong>Date de naissance :</strong> {{ $patient->date_naissance?->translatedFormat('d F Y') ?? '—' }}</p>
+                    <p><strong>Âge :</strong> {{ $patient->date_naissance ? $patient->date_naissance->age . ' ans' : '—' }}</p>
                     <p><strong>Sexe :</strong> {{ $patient->sexe }}</p>
                 </div>
                 <div class="col-md-6">

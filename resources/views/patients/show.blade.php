@@ -101,10 +101,19 @@
             </div>
 
             @if(auth()->user()->isAdmin())
-                <a href="{{ route('consultations.edit', $consultation->id) }}"
-                   class="btn btn-sm btn-outline-warning">
-                    Modifier
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('consultations.edit', $consultation->id) }}"
+                       class="btn btn-sm btn-outline-warning">
+                        Modifier
+                    </a>
+                    <form action="{{ route('consultations.destroy', $consultation->id) }}"
+                          method="POST"
+                          onsubmit="return confirm('Supprimer cette consultation ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+                    </form>
+                </div>
             @endif
 
         </div>
@@ -207,18 +216,19 @@
 
         </div>
 
-        @if(auth()->user()->isAdmin())
         <hr>
+        @if(auth()->user()->isAdmin())
         <p>
             <strong>Observations :</strong>
             {{ $consultation->observations }}
         </p>
+        @endif
 
+        {{-- Traitement visible par tous les utilisateurs --}}
         <p>
             <strong>Traitement :</strong>
-            {{ $consultation->traitement }}
+            {{ $consultation->traitement ?? '—' }}
         </p>
-        @endif
 
        
 
@@ -274,6 +284,9 @@
                 <th>Résultat</th>
                 <th>Unité</th>
                 <th>Observations</th>
+                @if(auth()->user()->isAdmin())
+                    <th>Actions</th>
+                @endif
             </tr>
 
         </thead>
@@ -295,6 +308,23 @@
                 <td>{{ $bilan->unite ?? '—' }}</td>
 
                 <td>{{ $bilan->observations ?? '—' }}</td>
+
+                @if(auth()->user()->isAdmin())
+                <td class="text-nowrap">
+                    <a href="{{ route('bilans.edit', $bilan->id) }}"
+                       class="btn btn-sm btn-outline-warning">
+                        Modifier
+                    </a>
+                    <form action="{{ route('bilans.destroy', $bilan->id) }}"
+                          method="POST"
+                          class="d-inline"
+                          onsubmit="return confirm('Supprimer ce bilan ?')">
+                        @csrf
+                        @method('DELETE')
+                        <button class="btn btn-sm btn-outline-danger">Supprimer</button>
+                    </form>
+                </td>
+                @endif
 
             </tr>
 

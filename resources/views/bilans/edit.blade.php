@@ -5,7 +5,7 @@
 
     <meta charset="UTF-8">
 
-    <title>Nouveau bilan</title>
+    <title>Modifier le bilan</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
           rel="stylesheet">
@@ -16,7 +16,7 @@
 
 <div class="container mt-5">
 
-    <h2>Nouveau bilan</h2>
+    <h2>Modifier le bilan</h2>
 
     <div class="card mb-4">
 
@@ -36,20 +36,17 @@
 
     </div>
 
-    <form action="{{ route('bilans.store') }}"
+    <form action="{{ route('bilans.update', $bilan->id) }}"
           method="POST">
 
         @csrf
+        @method('PUT')
 
-        <input type="hidden"
-               name="patient_id"
-               value="{{ $patient->id }}">
-
-        @include('bilans._form')
+        @include('bilans._form', ['bilan' => $bilan])
 
         <button class="btn btn-success">
 
-            Enregistrer le bilan
+            Enregistrer les modifications
 
         </button>
 

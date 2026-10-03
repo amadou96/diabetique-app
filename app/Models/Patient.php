@@ -18,6 +18,9 @@ class Patient extends Model
 
     public const STRUCTURE_AUTRES = 'Autres';
 
+    // Un patient sans consultation depuis ce nombre de mois est "sans suivi"
+    public const MOIS_SANS_SUIVI = 4;
+
     /**
      * Retourne la structure saisie : la valeur du champ libre si "Autres" est choisi.
      */

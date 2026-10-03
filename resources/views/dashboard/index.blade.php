@@ -71,7 +71,7 @@
                     </div>
                     <div>
                         <div class="fs-2 fw-bold text-warning">{{ $sansSuivi }}</div>
-                        <div class="text-muted small">Sans suivi +3 mois</div>
+                        <div class="text-muted small">Sans suivi +{{ \App\Models\Patient::MOIS_SANS_SUIVI }} mois</div>
                     </div>
                 </div>
             </div>

@@ -21,22 +21,25 @@ class PatientController extends Controller
             $query->where('structure', $user->structure);
         }
 
-        // Filtre "sans suivi +3 mois"
+        // Filtre "sans suivi" (voir Patient::MOIS_SANS_SUIVI)
         if ($filtre === 'sans_suivi') {
             $idsAvecSuivi = Consultation::select('patient_id')
-                ->where('date_consultation', '>=', now()->subMonths(3)->toDateString())
+                ->where('date_consultation', '>=', now()->subMonths(Patient::MOIS_SANS_SUIVI)->toDateString())
                 ->distinct()
                 ->pluck('patient_id');
             $query->whereNotIn('id', $idsAvecSuivi);
         }
 
-        // Recherche textuelle
+        // Recherche textuelle : chaque mot doit apparaître dans au moins un champ,
+        // ce qui permet "Prénom Nom" comme "Nom Prénom"
         if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('nom', 'like', "%{$search}%")
-                  ->orWhere('prenom', 'like', "%{$search}%")
-                  ->orWhere('numero_dossier', 'like', "%{$search}%");
-            });
+            foreach (preg_split('/\s+/', trim($search)) as $mot) {
+                $query->where(function ($q) use ($mot) {
+                    foreach (['nom', 'prenom', 'numero_dossier', 'adresse', 'structure'] as $champ) {
+                        $q->orWhere($champ, 'like', "%{$mot}%");
+                    }
+                });
+            }
         }
 
         $patients = $query->latest()->get();
