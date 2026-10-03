@@ -25,7 +25,7 @@
             @auth
 
                 <a href="{{ route('dashboard') }}" class="btn btn-sm btn-outline-light">
-                    Dashboard
+                    Tableau de bord
                 </a>
 
                 <a href="{{ route('patients.index') }}" class="btn btn-sm btn-outline-light">
