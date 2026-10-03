@@ -18,11 +18,11 @@ jobs:
     - uses: actions/checkout@v4
     # - name: Copy .env
     #   run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Set up .env
-      run: |
-        echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-        echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-        echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_1 }}" >> .env
+    # - name: Set up .env
+    #   run: |
+    #     echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+    #     echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+    #     echo "DB_PASSWORD=${{ secrets.DB_PASSWORD_1 }}" >> .env
         # ... Ajoutez d'autres variables d'environnement si nécessaire
 
     - name: Install Dependencies
