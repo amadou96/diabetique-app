@@ -27,7 +27,7 @@
                 <label class="form-label">Numéreo de dossier <span class="text-danger">*</span></label>
                 <input type="text" name="numero_dossier" class="form-control"
                        value="{{ old('numero_dossier') }}" placeholder="ex : 61" required>
-                <small class="text-muted">Doit être unique. Les dossiers existants sont numérotés de 1 à 60.</small>
+                <small class="text-muted">Unique. Les dossiers existants sont numérotés de 1 à 60.</small>
             </div>
 
             @if(auth()->user()->isAdmin())
